@@ -53,10 +53,13 @@ function ProductListContainer({
 }) {
   const today = new Date();
   today.setDate(today.getDate() - 3);
+  const month = new Date(today).toLocaleDateString("de").slice(3, 4);
   const date = new Date(today).toLocaleDateString("de").slice(0, 2);
 
   const checkIfNewItem = (prod) => {
-    return prod.slice(8, 10) - 3 <= date ? true : false;
+    return prod.slice(6, 7) === month && date <= prod.slice(8, 10)
+      ? true
+      : false;
   };
 
   return (
@@ -84,7 +87,7 @@ function ProductListContainer({
                 </div>
               ))
           : productList
-              .slice(0, 20)
+              .slice(0, 21)
               .map((product, index) => (
                 <div key={index}>
                   {product.product_type === title && (

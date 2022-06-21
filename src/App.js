@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import Loader from "react-spinner-loader";
 import ProductListContainer from "./components/ProductListContainer";
 import { GetProducts } from "./api/GetProducts";
-import axios from "axios";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -50,6 +49,18 @@ function App() {
     return product.product_type === "Accessories";
   });
 
+  const productTypes = [
+    { title: "Shoes", list: shoesList, showMore: showMoreShoes },
+    { title: "Apparel", list: apparelList, showMore: showMoreApparel },
+    { title: "Socks", list: socksList, showMore: showMoreSocks },
+    { title: "Underwear", list: underwearList, showMore: showMoreUnderwear },
+    {
+      title: "Accessories",
+      list: accessoriesList,
+      showMore: showMoreAccessories,
+    },
+  ];
+
   const handleShowMore = (prodType) => {
     if (prodType === "Shoes") {
       setShowMoreShoes(!showMoreShoes);
@@ -68,36 +79,16 @@ function App() {
     <>
       {!loader ? (
         <>
-          <ProductListContainer
-            title="Shoes"
-            productList={shoesList}
-            showMoreProducts={showMoreShoes}
-            handleShowMore={() => handleShowMore("Shoes")}
-          />
-          <ProductListContainer
-            title="Apparel"
-            productList={apparelList}
-            showMoreProducts={showMoreApparel}
-            handleShowMore={() => handleShowMore("Apparel")}
-          />
-          <ProductListContainer
-            title="Socks"
-            productList={socksList}
-            showMoreProducts={showMoreSocks}
-            handleShowMore={() => handleShowMore("Socks")}
-          />
-          <ProductListContainer
-            title="Underwear"
-            productList={underwearList}
-            showMoreProducts={showMoreUnderwear}
-            handleShowMore={() => handleShowMore("Underwear")}
-          />
-          <ProductListContainer
-            title="Accessories"
-            productList={accessoriesList}
-            showMoreProducts={showMoreAccessories}
-            handleShowMore={() => handleShowMore("Accessories")}
-          />
+          {productTypes.map((prod, idx) => (
+            <div key={idx}>
+              <ProductListContainer
+                title={prod.title}
+                productList={prod.list}
+                showMoreProducts={prod.showMore}
+                handleShowMore={() => handleShowMore(prod.title)}
+              />
+            </div>
+          ))}
         </>
       ) : (
         <Loader show={loader} type="body" />
